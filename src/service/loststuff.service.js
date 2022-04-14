@@ -14,7 +14,7 @@ class lostStuffService {
      */
     async getLostInfo() {
         const statement = `SELECT *,
-        (SELECT JSON_ARRAYAGG(CONCAT('http://localhost:8000/loststuff/images/', tb_lostImg.filename)) 
+        (SELECT JSON_ARRAYAGG(CONCAT('http://121.41.115.226:8001/loststuff/images/', tb_lostImg.filename)) 
         FROM tb_lostImg WHERE tb_lostStuff.num = tb_lostImg.id) AS image
         FROM tb_lostStuff;`
         const [result] = await connection.execute(statement); 
