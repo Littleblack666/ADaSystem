@@ -22,7 +22,7 @@ class lostStuffService {
         tb_loststuff.createAt,
         tb_loststuff.updateAt,
         JSON_OBJECT('id', tb_user.id, 'headImageUrl', tb_user.headImageUrl) userInfo,
-            (SELECT JSON_ARRAYAGG(CONCAT('http://localhost:8000/loststuff/images/', tb_lostimg.filename)) 
+            (SELECT JSON_ARRAYAGG(CONCAT('http://121.41.115.226:8001/loststuff/images/', tb_lostimg.filename)) 
             FROM tb_lostimg WHERE tb_loststuff.num = tb_lostimg.lostId) image
             FROM tb_loststuff LEFT JOIN tb_user ON tb_loststuff.id = tb_user.id;`
         const [result] = await connection.execute(statement);
