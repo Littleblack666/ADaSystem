@@ -8,7 +8,7 @@ class loginController {
      * 返回值：一个string字符
      */
     async login(ctx, next) {
-        const {id, name, headImageUrl} = ctx.query;
+        const {id, name, headImageUrl} = ctx.request.body;
         const result = await loginService.wechatLogin(id, name, headImageUrl);
         ctx.body = result;
     }

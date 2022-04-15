@@ -21,7 +21,7 @@ const lostStuffRouter = new Router({prefix: '/loststuff'});
  * 数据传输格式，路径，参数
  */
 
-lostStuffRouter.get('/getLostInfo', getLostInfo_ctrl);
+lostStuffRouter.post('/getLostInfo', getLostInfo_ctrl);
 
 lostStuffRouter.post('/uploadLostInfo', lostStuffImgHandle, uploadLostInfo_ctrl);
 

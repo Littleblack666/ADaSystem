@@ -8,11 +8,11 @@ const Router = require('koa-router');
 
 
 //创建路由router对象
-const loginRouter = new Router();
+const loginRouter = new Router({prefix: '/logins'});
 
 
 //设置数据传输格式，路径，参数
-loginRouter.get('/login', login);
+loginRouter.post('/', login);
 
 
 //导出loginRouter

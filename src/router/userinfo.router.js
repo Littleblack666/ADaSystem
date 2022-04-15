@@ -16,9 +16,9 @@ const userInfoRouter = new Router({prefix: '/userinfo'});
  * 数据传输格式，路径，参数
  */
 
-userInfoRouter.get('/checked', checked);
+userInfoRouter.post('/checked', checked);
 
-userInfoRouter.get('/uploaded', uploaded)
+userInfoRouter.post('/uploaded', uploaded)
 
 
 //导出router

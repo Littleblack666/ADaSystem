@@ -13,12 +13,20 @@ class lostStuffService {
      * @returns 
      */
     async getLostInfo() {
-        const statement = `SELECT *,
-        (SELECT JSON_ARRAYAGG(CONCAT('http://121.41.115.226:8001/loststuff/images/', tb_lostImg.filename)) 
-        FROM tb_lostImg WHERE tb_lostStuff.num = tb_lostImg.id) AS image
-        FROM tb_lostStuff;`
-        const [result] = await connection.execute(statement); 
-        return result
+        const statement = `SELECT tb_loststuff.num,
+        tb_loststuff.title,
+        tb_loststuff.address,
+        tb_loststuff.phone,
+        tb_loststuff.message,
+        tb_loststuff.state,
+        tb_loststuff.createAt,
+        tb_loststuff.updateAt,
+        JSON_OBJECT('id', tb_user.id, 'headImageUrl', tb_user.headImageUrl) userInfo,
+            (SELECT JSON_ARRAYAGG(CONCAT('http://localhost:8000/loststuff/images/', tb_lostimg.filename)) 
+            FROM tb_lostimg WHERE tb_loststuff.num = tb_lostimg.lostId) image
+            FROM tb_loststuff LEFT JOIN tb_user ON tb_loststuff.id = tb_user.id;`
+        const [result] = await connection.execute(statement);
+        return result;
     }
 
     /**
@@ -28,7 +36,7 @@ class lostStuffService {
      * @returns 
      */
     async uploadLostInfo(id, title, address, phone, message, state) {
-        const statement = `INSERT INTO tb_lostStuff (id, title, address, phone, message, state) VALUES(?,?,?,?,?,?);`
+        const statement = `INSERT INTO tb_loststuff (id, title, address, phone, message, state) VALUES(?,?,?,?,?,?);`
         const [result] = await connection.execute(statement,[id, title, address, phone, message, state]);
         return result;
     }
@@ -41,7 +49,7 @@ class lostStuffService {
      * @returns 
      */
     async createImgPath(filename, type, size, lostId) {
-        const statement = `INSERT INTO tb_lostImg (filename, type, size, lostId) VALUES(?,?,?,?);`
+        const statement = `INSERT INTO tb_lostimg (filename, type, size, lostId) VALUES(?,?,?,?);`
         const [result] = await connection.execute(statement,[filename, type, size, lostId]);
         return result;
     }
@@ -55,7 +63,7 @@ class lostStuffService {
      */
 
     async getLostImgInfo(filename) {
-        const statement = `SELECT * FROM tb_lostImg WHERE filename = ?;`;
+        const statement = `SELECT * FROM tb_lostimg WHERE filename = ?;`;
         const [result] = await connection.execute(statement, [filename]);
         return result[0];
     }

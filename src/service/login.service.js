@@ -17,7 +17,7 @@ class loginService {
         const [result] = await connection.execute(statement, [id]); 
 
         //如果表中已存在微信用户信息
-        if (result != null && result != 0){
+        if (result?.length){
             const statement = `UPDATE tb_user SET name = ?, headImageUrl = ? WHERE id = ?;`
             await connection.execute(statement, [name, headImageUrl, id]); 
 

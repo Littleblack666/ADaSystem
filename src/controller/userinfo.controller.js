@@ -7,7 +7,7 @@ class userInfoController {
      * 返回值：数组
      */
     async checked(ctx, next) {
-        const {id} = ctx.query;
+        const {id} = ctx.request.body;
         const result = await userInfoService.userInfoChecked(id);
         ctx.body = result;
     }
@@ -18,7 +18,7 @@ class userInfoController {
      * 返回值：无
      */
     async uploaded(ctx, next) {
-        const {id, schoolName, collage, studentId, phone} = ctx.query;
+        const {id, schoolName, collage, studentId, phone} = ctx.request.body;
         const result = await userInfoService.userInfoUpload(id, schoolName, collage, studentId, phone);
         ctx.body = "用户信息上传成功！";
     }
