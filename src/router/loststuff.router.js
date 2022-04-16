@@ -6,6 +6,8 @@ const Router = require('koa-router');
  * 参数：getLostInfo_ctrl, uploadLostInfo_ctrl, getLostImg
  */
 const { getLostInfo_ctrl,
+    getMyLostInfo_ctrl,
+    changeLostState_ctrl,
     uploadLostInfo_ctrl,
     getLostImg
   } = require('../controller/loststuff.controller');
@@ -22,6 +24,10 @@ const lostStuffRouter = new Router({prefix: '/loststuff'});
  */
 
 lostStuffRouter.post('/getLostInfo', getLostInfo_ctrl);
+
+lostStuffRouter.post('/getMyLostInfo', getMyLostInfo_ctrl);
+
+lostStuffRouter.post('/changeLostState', changeLostState_ctrl);
 
 lostStuffRouter.post('/uploadLostInfo', lostStuffImgHandle, uploadLostInfo_ctrl);
 

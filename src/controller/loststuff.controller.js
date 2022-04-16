@@ -6,12 +6,33 @@ const { LOST_IMG_PATH } = require('../constants/file-path');
 class lostStuffController {
 
     /**
-     * 功能：获取失物表信息
+     * 功能：获取所有失物表信息
      * 
      */
     async getLostInfo_ctrl(ctx, next) {
         const result = await lostStuffService.getLostInfo();
         ctx.body = result;
+    }
+
+    /**
+     * 功能：获取该用户id下的失物信息
+     * 
+     */
+     async getMyLostInfo_ctrl(ctx, next) {
+        const {id} = ctx.request.body;
+        const result = await lostStuffService.getMyLostInfo(id);
+        ctx.body = result;
+    }
+
+    /**
+     * 功能：改变失物招领状态：0为未招领，1为招领
+     * 参数：num
+     * 返回：字符串
+     */
+     async changeLostState_ctrl(ctx, next) {
+        const {num} = ctx.request.body;
+        const result = await lostStuffService.changeLostState(Number(num));
+        ctx.body = "该失物招领成功！";
     }
 
 
@@ -25,12 +46,12 @@ class lostStuffController {
         const lostId = result.insertId;//获取特殊字段进行赋值
         const files = ctx.req.files;//post请求文件输出流
         for (let file of files) {
-            console.log(file);
+            // console.log(file);
             const {filename, mimetype, size} = file;
-            console.log(filename, mimetype, size);
+            // console.log(filename, mimetype, size);
             await lostStuffService.createImgPath(filename, mimetype, size, lostId);
         }
-        ctx.body = '上传成功！';
+        ctx.body = '失物招领上传成功！';
     }
 
     /**

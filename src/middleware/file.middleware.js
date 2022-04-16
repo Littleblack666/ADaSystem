@@ -3,7 +3,8 @@ const { AVATAR_PATH,
         PICTURE_PATH,
         FOOD_PICTURE_PATH,
         SW_PICTURE_PATH,
-        LOST_IMG_PATH
+        LOST_IMG_PATH,
+        FIND_IMG_PATH
 
 } = require('../constants/file-path');
 const jimp = require('jimp');
@@ -34,12 +35,19 @@ const swPictureUpload = Multer({
 
 const swPictureHandle = swPictureUpload.array('sw', 9);
 
-
+//失物图片路径的配置
 const lostImgUpload = Multer({
   dest: LOST_IMG_PATH
 });
 
 const lostStuffImgHandle = lostImgUpload.array('loststuff', 9);
+
+//寻物图片路径的配置
+const findImgUpload = Multer({
+  dest: FIND_IMG_PATH
+});
+
+const findStuffImgHandle = findImgUpload.array('findstuff', 9);
 
 
 const pictureResize = async (ctx, next) => {
@@ -58,4 +66,4 @@ const pictureResize = async (ctx, next) => {
 
 
 module.exports = {avatarHandle ,pictureHandle, pictureResize, foodPictureHandle, swPictureHandle,
-  lostStuffImgHandle};
+  lostStuffImgHandle, findStuffImgHandle};

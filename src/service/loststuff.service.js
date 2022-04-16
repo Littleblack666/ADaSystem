@@ -7,7 +7,7 @@ const connection = require('../app/database');
 class lostStuffService {
     
     /**
-     * 功能：获取失物表信息
+     * 功能：获取所有失物表信息
      * 参数：无
      * 返回：数组
      * @returns 
@@ -29,8 +29,50 @@ class lostStuffService {
         return result;
     }
 
+
     /**
-     * 功能上传失物表信息
+     * 功能：获取用户id下的失物表信息
+     * 参数：无
+     * 返回：数组
+     * @returns 
+     */
+     async getMyLostInfo(id) {
+        const statement = `SELECT tb_loststuff.num,
+        tb_loststuff.title,
+        tb_loststuff.address,
+        tb_loststuff.phone,
+        tb_loststuff.message,
+        tb_loststuff.state,
+        tb_loststuff.createAt,
+        tb_loststuff.updateAt,
+        JSON_OBJECT('id', tb_user.id, 'headImageUrl', tb_user.headImageUrl) userInfo,
+            (SELECT JSON_ARRAYAGG(CONCAT('http://121.41.115.226:8001/loststuff/images/', tb_lostimg.filename)) 
+            FROM tb_lostimg WHERE tb_loststuff.num = tb_lostimg.lostId) image
+            FROM tb_loststuff LEFT JOIN tb_user ON tb_loststuff.id = tb_user.id where tb_user.id = ?;`
+        const [result] = await connection.execute(statement,[id]);
+        return result;
+    }
+
+
+
+    /**
+     * 功能：改变失物招领状态：0为未招领，1为招领
+     * 参数：num
+     * 返回：数组
+     * @returns 
+     */
+
+    async changeLostState(num) {
+        const statement = `update tb_loststuff set state = 1 where num = ?`
+        const [result] = await connection.execute(statement, [num]);
+        return result;
+    }
+
+
+
+
+    /**
+     * 功能：上传失物表基本信息
      * 参数：id, title, address, phone, message, state
      * 返回：数组
      * @returns 
