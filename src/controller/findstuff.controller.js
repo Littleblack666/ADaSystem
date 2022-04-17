@@ -28,13 +28,14 @@ class findStuffController {
 
     /**
      * 功能：改变寻物启事状态：0为未寻回，1为寻回
-     * 参数：num
-     * 返回：字符串
+     * 参数：num, id
+     * 返回：字符串, 数组
      */
      async changeFindState_ctrl(ctx, next) {
-        const {num} = ctx.request.body;
-        const result = await findStuffService.changeFindState(Number(num));
-        ctx.body = "该失物寻回成功！";
+        const {num, id, id2} = ctx.request.body;
+        const result = await findStuffService.changeFindState(Number(num), id, id2);
+        ctx.body = "该失物寻回成功！寻回人信息如下所示：";
+        ctx.body = result;
     }
 
 

@@ -26,13 +26,14 @@ class lostStuffController {
 
     /**
      * 功能：改变失物招领状态：0为未招领，1为招领
-     * 参数：num
-     * 返回：字符串
+     * 参数：num, id
+     * 返回：字符串, 数组
      */
      async changeLostState_ctrl(ctx, next) {
-        const {num} = ctx.request.body;
-        const result = await lostStuffService.changeLostState(Number(num));
-        ctx.body = "该失物招领成功！";
+        const {num, id, id2} = ctx.request.body;
+        const result = await lostStuffService.changeLostState(Number(num), id, id2);
+        ctx.body = "该失物招领成功！招领人信息如下所示：";
+        ctx.body = result;
     }
 
 

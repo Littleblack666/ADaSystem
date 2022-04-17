@@ -56,15 +56,41 @@ class lostStuffService {
 
 
     /**
-     * 功能：改变失物招领状态：0为未招领，1为招领
-     * 参数：num
+     * 功能：改变失物招领状态：0为未招领，1为招领并显示招领人的信息
+     * 参数：num, id, id2
      * 返回：数组
      * @returns 
      */
 
-    async changeLostState(num) {
-        const statement = `update tb_loststuff set state = 1 where num = ?`
-        const [result] = await connection.execute(statement, [num]);
+    async changeLostState(num, id, id2) {
+        //先进行更新
+        const statement1 = `update tb_loststuff set state = 1, id2 = ? where num = ?`
+        await connection.execute(statement1, [id2, num]);
+
+        //再进行查询并返回
+        // const statement2 = `select * from tb_loststuff left join tb_user  on tb_user.id  = ? where tb_loststuff.num = ?;`
+        // const statement2 = `select * from tb_user where id = ?;`
+
+        const statement2 = `SELECT tb_loststuff.num,
+        tb_loststuff.title,
+        tb_loststuff.address,
+        tb_loststuff.phone,
+        tb_loststuff.message,
+        tb_loststuff.state,
+        tb_loststuff.createAt,
+        tb_loststuff.updateAt,
+
+        JSON_OBJECT('id', tb_user.id, 'headImageUrl', tb_user.headImageUrl) publisher,
+        
+        (SELECT JSON_ARRAYAGG(CONCAT('http://121.41.115.226:8001/loststuff/images/', tb_lostimg.filename)) 
+        FROM tb_lostimg WHERE tb_loststuff.num = tb_lostimg.lostId) image,
+
+        (select JSON_ARRAYAGG(JSON_OBJECT('id', tb_user.id, 'name', tb_user.name, 'phone', tb_user.phone)) 
+        from tb_user where tb_user.id = tb_loststuff.id2) receiver
+            
+        FROM tb_loststuff LEFT JOIN tb_user ON tb_loststuff.id = tb_user.id where tb_user.id = ? and tb_loststuff.id2 = ?;`
+
+        const [result] = await connection.execute(statement2, [id, id2]);
         return result;
     }
 
