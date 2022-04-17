@@ -64,7 +64,7 @@ class findStuffService {
 
      async changeFindState(num, id, id2) {
          //先进行更新
-        const statement1 = `update tb_findstuff set state = 1, id2 = ? where num = ?`
+        const statement1 = `update tb_findstuff set state = 3, id2 = ? where num = ?`
         await connection.execute(statement1, [id2, num]);
 
         //再进行查询并返回
