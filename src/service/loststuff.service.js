@@ -21,13 +21,13 @@ class lostStuffService {
         tb_loststuff.state,
         tb_loststuff.createAt,
         tb_loststuff.updateAt,
-        JSON_OBJECT('id', tb_user.id, 'headImageUrl', tb_user.headImageUrl) userInfo,
+        JSON_OBJECT('id', tb_user.id, 'headImageUrl', tb_user.headImageUrl) publisherInfo,
 
             (SELECT JSON_ARRAYAGG(CONCAT('http://121.41.115.226:8001/loststuff/images/', tb_lostimg.filename)) 
             FROM tb_lostimg WHERE tb_loststuff.num = tb_lostimg.lostId) image,
 
             (select JSON_ARRAYAGG(JSON_OBJECT('id', tb_user.id, 'name', tb_user.name, 'phone', tb_user.phone)) 
-            from tb_user where tb_user.id = tb_loststuff.id2) receiver
+            from tb_user where tb_user.id = tb_loststuff.id2) receiverInfo
 
             FROM tb_loststuff LEFT JOIN tb_user ON tb_loststuff.id = tb_user.id;`
         const [result] = await connection.execute(statement);
@@ -50,14 +50,14 @@ class lostStuffService {
         tb_loststuff.state,
         tb_loststuff.createAt,
         tb_loststuff.updateAt,
-        JSON_OBJECT('id', tb_user.id, 'headImageUrl', tb_user.headImageUrl) userInfo,
+        JSON_OBJECT('id', tb_user.id, 'headImageUrl', tb_user.headImageUrl) publisherInfo,
 
             (SELECT JSON_ARRAYAGG(CONCAT('http://121.41.115.226:8001/loststuff/images/', tb_lostimg.filename)) 
             FROM tb_lostimg WHERE tb_loststuff.num = tb_lostimg.lostId) image,
 
             (select JSON_ARRAYAGG(JSON_OBJECT('id', tb_user.id, 'name', tb_user.name, 'phone', tb_user.phone)) 
-            from tb_user where tb_user.id = tb_loststuff.id2) receiver
-            
+            from tb_user where tb_user.id = tb_loststuff.id2) receiverInfo
+
             FROM tb_loststuff LEFT JOIN tb_user ON tb_loststuff.id = tb_user.id where tb_user.id = ?;`
         const [result] = await connection.execute(statement,[id]);
         return result;
