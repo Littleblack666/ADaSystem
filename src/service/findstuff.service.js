@@ -22,8 +22,13 @@ class findStuffService {
         tb_findstuff.createAt,
         tb_findstuff.updateAt,
         JSON_OBJECT('id', tb_user.id, 'headImageUrl', tb_user.headImageUrl) userInfo,
+
             (SELECT JSON_ARRAYAGG(CONCAT('http://121.41.115.226:8001/findstuff/images/', tb_findimg.filename)) 
-            FROM tb_findimg WHERE tb_findstuff.num = tb_findimg.findId) image
+            FROM tb_findimg WHERE tb_findstuff.num = tb_findimg.findId) image,
+
+            (select JSON_ARRAYAGG(JSON_OBJECT('id', tb_user.id, 'name', tb_user.name, 'phone', tb_user.phone)) 
+            from tb_user where tb_user.id = tb_findstuff.id2) receiver
+            
             FROM tb_findstuff LEFT JOIN tb_user ON tb_findstuff.id = tb_user.id;`
         const [result] = await connection.execute(statement);
         return result;
@@ -47,8 +52,13 @@ class findStuffService {
         tb_findstuff.createAt,
         tb_findstuff.updateAt,
         JSON_OBJECT('id', tb_user.id, 'headImageUrl', tb_user.headImageUrl) userInfo,
+
             (SELECT JSON_ARRAYAGG(CONCAT('http://121.41.115.226:8001/findstuff/images/', tb_findimg.filename)) 
-            FROM tb_findimg WHERE tb_findstuff.num = tb_findimg.findId) image
+            FROM tb_findimg WHERE tb_findstuff.num = tb_findimg.findId) image,
+
+            (select JSON_ARRAYAGG(JSON_OBJECT('id', tb_user.id, 'name', tb_user.name, 'phone', tb_user.phone)) 
+            from tb_user where tb_user.id = tb_findstuff.id2) receiver
+
             FROM tb_findstuff LEFT JOIN tb_user ON tb_findstuff.id = tb_user.id where tb_user.id = ?;`
         const [result] = await connection.execute(statement,[id]);
         return result;

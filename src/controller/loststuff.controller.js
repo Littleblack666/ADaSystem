@@ -32,8 +32,8 @@ class lostStuffController {
      async changeLostState_ctrl(ctx, next) {
         const {num, id, id2} = ctx.request.body;
         const result = await lostStuffService.changeLostState(Number(num), id, id2);
-        ctx.body = "该失物招领成功！招领人信息如下所示：";
-        ctx.body = result;
+        ctx.body = "该失物招领成功！";
+        // ctx.body = result;
     }
 
 
