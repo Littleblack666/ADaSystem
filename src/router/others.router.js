@@ -2,7 +2,7 @@ const Router = require('koa-router');
 
 /**
  * 从othersController取出对应函数
- * 函数：login
+ * 函数：lostSearch_ctrl, findSearch_ctrl
  */
  const {lostSearch_ctrl, findSearch_ctrl} = require('../controller/others.controller');
 
