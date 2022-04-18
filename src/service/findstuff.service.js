@@ -114,6 +114,7 @@ class findStuffService {
     async uploadFindInfo(id, title, address, phone, message, state) {
         const statement = `INSERT INTO tb_findstuff (id, title, address, phone, message, state) VALUES(?,?,?,?,?,?);`
         const [result] = await connection.execute(statement,[id, title, address, phone, message, state]);
+        
         return result;
     }
 
