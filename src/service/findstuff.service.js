@@ -88,7 +88,7 @@ class findStuffService {
         tb_findstuff.createAt,
         tb_findstuff.updateAt,
 
-        JSON_OBJECT('id', tb_user.id, 'headImageUrl', tb_user.headImageUrl) publisher,
+        JSON_OBJECT('id', tb_user.id, 'headImageUrl', tb_user.headImageUrl) publisherInfo,
         
         (SELECT JSON_ARRAYAGG(CONCAT('http://121.41.115.226:8001/findstuff/images/', tb_findimg.filename)) 
         FROM tb_findimg WHERE tb_findstuff.num = tb_findimg.findId) image,
@@ -114,7 +114,7 @@ class findStuffService {
     async uploadFindInfo(id, title, address, phone, message, state) {
         const statement = `INSERT INTO tb_findstuff (id, title, address, phone, message, state) VALUES(?,?,?,?,?,?);`
         const [result] = await connection.execute(statement,[id, title, address, phone, message, state]);
-        
+
         return result;
     }
 
